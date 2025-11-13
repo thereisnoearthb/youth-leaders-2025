@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Care4Kere</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <style>
+      body { background-color: white; color: black; padding-top: 1rem; padding-bottom: 1rem; }
+      .container { max-width: 800px; }
+      .btn-custom-primary { background-color: #2e4989; border-color: #2e4989; color: white; }
+      .btn-custom-primary:hover, .btn-custom-primary:focus { background-color: #1e3a75; border-color: #1e3a75; color: white; }
+      .btn-custom-secondary { background-color: #dfd3b9; border-color: #dfd3b9; color: black; }
+      .btn-custom-secondary:hover, .btn-custom-secondary:focus { background-color: #c9bfa5; border-color: #c9bfa5; color: black; }
+      .btn.disabled, .btn:disabled, fieldset:disabled .btn { pointer-events: none; opacity: 0.65; }
+      .email-preview { background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 1.5rem; margin-top: 1rem; border-radius: 0.375rem; white-space: pre-wrap; word-wrap: break-word; font-family: monospace; max-height: 50vh; overflow-y: auto; }
+      h5, h6 { color: #2e4989; }
+      #email-details p { margin-bottom: 0.5rem; word-wrap: break-word; }
+    </style>
+</head>
+<body>
+    <div class="container">
+      <h5 class="mb-3 text-center">Email Preview & Actions</h5>
+      <p class="text-center text-muted small">Clicking on 'Send Mail' will open your email app.
+        <br>
+         If your email app doesn't open correctly, please use the copy button.</p>
+      <div class="text-center mb-4">
+        <a id="send" href="#" target="_blank" class="btn btn-custom-primary btn-lg me-2 disabled" role="button" title="Generating link...">
+          <i class="bi bi-send"></i> Send Mail
+        </a>
+        <button id="copy" class="btn btn-custom-secondary me-2" type="button">
+          <i class="bi bi-clipboard"></i> Copy Email Content
+        </button>
+      </div>
+      <h6>Email Details:</h6>
+      <div id="email-details" class="mb-3">
+        <p><strong>To:</strong> <span id="preview-to">(Generating...)</span></p>
+        <p id="cc-line" style="display: none;"><strong>Cc:</strong> <span id="preview-cc"></span></p>
+        <p id="bcc-line" style="display: none;"><strong>Bcc:</strong> <span id="preview-bcc"></span></p>
+        <p><strong>Subject:</strong> <span id="preview-subject">(Generating...)</span></p>
+      </div>
+      <h6>Email Body Preview:</h6>
+      <div id="email-preview" class="email-preview">(Generating...)</div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+      // --- Embedded Mail Generation Script START ---
+      
+      const TO_ADDRESS = "acsuddoffice@gmail.com";
+      const CC_ADDRESS = "governor.rbblr-ka@gov.in,prs-mi@karnataka.gov.in,ministerformist@gmail.com,uddminkar@gmail.com";
+      const BCC_ADDRESS = "solidarity@thereisnoearthb.com";
+      const SUBJECT_LINES = ["ಕರ್ನಾಟಕದಲ್ಲಿ ಸರೋವರ ಬಫರ್ ವಲಯಗಳನ್ನು ಕಡಿಮೆ ಮಾಡಲು ಆಕ್ಷೇಪಣೆ","ಸಾರ್ವಜನಿಕ ಸಲ್ಲಿಕೆ: ಕೆಟಿಸಿಡಿಎ ತಿದ್ದುಪಡಿಗಾಗಿ ಸಲಹೆಗಳು","ಕೆಟಿಸಿಡಿಎ ತಿದ್ದುಪಡಿ ಮಸೂದೆ 2025 ಅನ್ನು ಹಿಂತೆಗೆದುಕೊಳ್ಳಲು ವಿನಂತಿಸಿ","ಕರ್ನಾಟಕದ ನೀರಿನ ಸುರಕ್ಷತೆಯನ್ನು ಕಾಪಾಡುವುದು - ಬಫರ್ ವಲಯ ಕಡಿತಕ್ಕೆ ಆಕ್ಷೇಪಣೆಗಳು"];
+      const PARA1_OPTIONS = ["ಗೌರವಾನ್ವಿತ ಅಧಿಕಾರಿಗಳು, \n\nಕರ್ನಾಟಕ ಟ್ಯಾಂಕ್ ಸಂರಕ್ಷಣೆ ಮತ್ತು ಅಭಿವೃದ್ಧಿ ಪ್ರಾಧಿಕಾರ (ತಿದ್ದುಪಡಿ) ಮಸೂದೆಯನ್ನು (ತಿದ್ದುಪಡಿ) ಮಸೂದೆ, 2025 ರ ನಂತರ 2025 ರ ಸೆಪ್ಟೆಂಬರ್ 1 ರಂದು ಕರ್ನಾಟಕ ಸರ್ಕಾರದ ಹೆಚ್ಚುವರಿ ಮುಖ್ಯ ಕಾರ್ಯದರ್ಶಿ ಆಹ್ವಾನಿಸಿದಂತೆ, ಆಗಸ್ಟ್ 19 ರಂದು ಪರಿಚಯಿಸಲಾದ 30 ದಿನಗಳ ಸಾರ್ವಜನಿಕ ಸಮಾಲೋಚನಾ ಅವಧಿಯಲ್ಲಿ ನಮ್ಮ ಸಲಹೆಗಳನ್ನು ಸಲ್ಲಿಸಲು ನಾನು ಬರೆಯುತ್ತಿದ್ದೇನೆ. ಇತ್ತೀಚಿನ ಕೆಟಿಸಿಡಿಎ ತಿದ್ದುಪಡಿಯ ಬಗ್ಗೆ ನಾವು ಕಾಳಜಿ ವಹಿಸುತ್ತೇವೆ, ಇದು ಸರೋವರಗಳ ಸುತ್ತಲಿನ ಬಫರ್ ವಲಯಗಳನ್ನು ಏಕರೂಪವಾಗಿ 30 ಮೀಟರ್ನಿಂದ 0 ಮೀಟರ್‌ಗೆ 0.05 ಎಕರೆ ಕೆಳಗಿರುವ ಟ್ಯಾಂಕ್‌ಗಳಿಗೆ 100 ಎಕರೆ ಪ್ರದೇಶದ ಸರೋವರಗಳಿಗೆ ಕೇವಲ 30 ಮೀಟರ್‌ಗೆ ಇಳಿಸುತ್ತದೆ. ಸಂಬಂಧಿತ ನಗರಾಭಿವೃದ್ಧಿ ಇಲಾಖೆ (ಯುಡಿಡಿ) ಅಧಿಸೂಚನೆಯು ಚಂಡಮಾರುತದ ನೀರಿನ ಚರಂಡಿಗಳಿಗಾಗಿ ಬಫರ್ ವಲಯಗಳನ್ನು ಕ್ರಮವಾಗಿ 50/35/25 ಮೀಟರ್ (ಪ್ರಾಥಮಿಕ/ದ್ವಿತೀಯ/ತೃತೀಯ ಚರಂಡಿಗಳು) ನಿಂದ 15/10/5 ಮೀಟರ್‌ಗೆ ಇಳಿಸುತ್ತದೆ ಎಂದು ಸೂಚಿಸುತ್ತದೆ. ಪ್ರಸ್ತಾವಿತ ಮಸೂದೆಯು ರಾಜ್ಯದ ಪರಿಸರ, ನಗರ ಪ್ರದೇಶಗಳು ಮತ್ತು ಅದರ ಮೇಲೆ ಅವಲಂಬಿತವಾಗಿರುವ ಜನರಿಗೆ ನೀರಿನ ಸುರಕ್ಷತೆಯ ಮೇಲೆ ಗಮನಾರ್ಹ ಮತ್ತು ದೂರಗಾಮಿ ನಕಾರಾತ್ಮಕ ಪರಿಣಾಮಗಳನ್ನು ಬೀರುತ್ತದೆ."];
+      const PARA2_OPTIONS = ["ಈ ಪ್ರಸ್ತಾವಿತ ಶಾಸನದ ಅತ್ಯಂತ ಒತ್ತುವ ಪರಿಣಾಮಗಳಲ್ಲಿ ಇದು ಕರ್ನಾಟಕದ ಪರಿಸರ ಸಮಗ್ರತೆ ಮತ್ತು ಅದರ ಜನರ ಯೋಗಕ್ಷೇಮಕ್ಕೆ ಒಡ್ಡುವ ಬೆದರಿಕೆ, ಅವರ ಆರೋಗ್ಯ, ಜೀವನೋಪಾಯಗಳು ಈ ಪರಿಸರ ವ್ಯವಸ್ಥೆಗಳೊಂದಿಗೆ ಆಳವಾಗಿ ಹೆಣೆದುಕೊಂಡಿವೆ.\nಪರಿಸರ ಮತ್ತು ಜೀವವೈವಿಧ್ಯತೆಯ ನಷ್ಟಗಳು: ಇದು ಹೆಚ್ಚಿನ ಆದ್ಯತೆಯ ಕಾಳಜಿಯಾಗಿದೆ, ಏಕೆಂದರೆ ಇದು ಇಡೀ ರಾಜ್ಯದ ಮೇಲೆ ಪರಿಣಾಮ ಬೀರುತ್ತದೆ. ಮಸೂದೆಯು ಕರ್ನಾಟಕದ ಸುಮಾರು 45,000 ಸರೋವರಗಳಿಗೆ ಬೆದರಿಕೆ ಹಾಕುತ್ತದೆ. ಶೋಧನೆ ಮತ್ತು ಪ್ರವಾಹ ತಗ್ಗಿಸುವಿಕೆಗೆ ಪ್ರಮುಖವಾದ ಬಫರ್ ವಲಯಗಳಲ್ಲಿನ ಕಡಿತವು 11 ಕೋಟಿ (110 ಮಿಲಿಯನ್) ಮರಗಳಿಗೆ ತೀವ್ರವಾಗಿ ಅಪಾಯವನ್ನುಂಟು ಮಾಡುತ್ತದೆ. ಈ ವ್ಯಾಪಕವಾದ ವಿನಾಶವು ಜೀವವೈವಿಧ್ಯತೆ ಮತ್ತು ಈ ಪರಿಸರ ವ್ಯವಸ್ಥೆಗಳ ಮೇಲೆ ಅವಲಂಬಿತವಾಗಿರುವ ನೈಸರ್ಗಿಕ ಆವಾಸಸ್ಥಾನಗಳ ಮೇಲೆ ದುರಂತ ಪರಿಣಾಮ ಬೀರುತ್ತದೆ.\nಗದ್ದೆಗಳು ಮತ್ತು ಹಸಿರು ಹೊದಿಕೆಯ ನಷ್ಟವು ವಿಶೇಷವಾಗಿ ಆತಂಕಕಾರಿಯಾಗಿದೆ. ಬೆಂಗಳೂರು ಈಗಾಗಲೇ ತನ್ನ ಮೂಲ ಗದ್ದೆಗಳಲ್ಲಿ ಸುಮಾರು 95% ಅನ್ನು ಇಂದಿನವರೆಗೂ ಕಳೆದುಕೊಂಡಿದೆ. ಉಪಗ್ರಹ ದತ್ತಾಂಶವು ಈ ಪ್ರವೃತ್ತಿಯನ್ನು ದೃ ms ಪಡಿಸುತ್ತದೆ, ಬೆಂಗಳೂರಿನ ಹಸಿರು ಕವರ್ 1970 ರಲ್ಲಿ 70% ರಿಂದ ಇಂದು ಕೇವಲ 2-3% ಕ್ಕೆ ಇಳಿದಿದೆ ಎಂದು ತೋರಿಸುತ್ತದೆ, ಆದರೆ ಕಾಂಕ್ರೀಟ್ ನಗರದ 95% ಅನ್ನು ಸೇವಿಸಿದೆ. ಅಂತಹ ಒಂದು ಪಥವನ್ನು ಪರಿಸರ ಕುಸಿತದ ನೇರ ಮಾರ್ಗವಾಗಿ ನೋಡಲಾಗುತ್ತದೆ.\nನಗರ ನಿವಾಸಿಗಳು ಮತ್ತು ನಗರ ಕೇಂದ್ರಗಳಿಗೆ ಪ್ರವಾಹದ ಅಪಾಯಗಳು, ವಿಶೇಷವಾಗಿ ಬೆಂಗಳೂರು: ಕಡಿಮೆಯಾದ ಬಫರ್ ವಲಯದ ನೇರ ಪರಿಣಾಮವೆಂದರೆ ನಗರ ಪ್ರವಾಹದ ಅಪಾಯ. ಚಂಡಮಾರುತದ ನೀರು ಮತ್ತು ಚರಂಡಿಗಳನ್ನು ನಿರ್ವಹಿಸುವುದು ಸೇರಿದಂತೆ 2022 ರಲ್ಲಿ uter ಟರ್ ರಿಂಗ್ ರಸ್ತೆಯಲ್ಲಿ ಕಂಡುಬರುವಂತೆ ನಗರವು ಈಗಾಗಲೇ ನೀರಿನ ನಿರ್ವಹಣಾ ಬಿಕ್ಕಟ್ಟಿನೊಂದಿಗೆ ಹೋರಾಡುತ್ತಿದೆ. ಮಸೂದೆ ವಿಷಯಗಳನ್ನು ಹೆಚ್ಚು ಹದಗೆಡಿಸಬಹುದು."];
+      const PARA3_OPTIONS = ["ಕಿರಿದಾದ ಪ್ರವಾಹ ಪ್ರದೇಶಗಳು: ಸಣ್ಣ ಬಫರ್ ವಲಯಗಳು ನಿರ್ಮಾಣವು ಸರೋವರಗಳು ಮತ್ತು ಚಂಡಮಾರುತದ ಚರಂಡಿಗಳು ಅಥವಾ ರಾಜಕಲುವ್‌ಗಳಿಗೆ ಹತ್ತಿರವಾಗಲು ಅನುವು ಮಾಡಿಕೊಡುತ್ತದೆ. ಇದು ನೈಸರ್ಗಿಕ ಪ್ರವಾಹ ಪ್ರದೇಶಗಳನ್ನು ಸಂಕುಚಿತಗೊಳಿಸುತ್ತದೆ, ಭಾರೀ ಮಳೆಯ ಸಮಯದಲ್ಲಿ ನಗರವು ಪ್ರವಾಹಕ್ಕೆ ಹೆಚ್ಚು ಗುರಿಯಾಗುತ್ತದೆ. ಇತ್ತೀಚಿನ ವರ್ಷಗಳಲ್ಲಿ ಬೆಂಗಳೂರು ಈಗಾಗಲೇ ಗಮನಾರ್ಹ ಪ್ರವಾಹವನ್ನು ಅನುಭವಿಸಿದೆ, ಇದು ಈ ಮಸೂದೆಯಿಂದ ಉಲ್ಬಣಗೊಳ್ಳಬಹುದು.\nಮೂಲಸೌಕರ್ಯದ ಮೇಲಿನ ಒತ್ತಡ: ಬೆಂಗಳೂರಿನಲ್ಲಿ ಸುಮಾರು 1,000 ಕಿ.ಮೀ ರಾಜಕಲುವ್‌ಗಳೊಂದಿಗೆ, ಕಡಿಮೆಯಾದ ಬಫರ್ ವಲಯವು ಹರಿವನ್ನು ನಿರ್ವಹಿಸಲು ಮತ್ತು ಅಂತರ್ಜಲವನ್ನು ಪುನರ್ಭರ್ತಿ ಮಾಡಲು ಇನ್ನಷ್ಟು ಕಷ್ಟಕರವಾಗಿಸುತ್ತದೆ, ನಗರದ ಈಗಾಗಲೇ ವಿಫಲವಾದ ನೀರು ನಿರ್ವಹಣಾ ವ್ಯವಸ್ಥೆಯನ್ನು ಮತ್ತಷ್ಟು ಒತ್ತಿಹೇಳುತ್ತದೆ.\nಜೀವನೋಪಾಯ ಮತ್ತು ಆಹಾರ ಸುರಕ್ಷತೆಯ ಮೇಲೆ ಪರಿಣಾಮ: ಈ ವಿಷಯವು ನಗರ ಪ್ರದೇಶಗಳನ್ನು ಮೀರಿ ಗ್ರಾಮೀಣ ಸಮುದಾಯಗಳ ಉಳಿವಿಗೆ ವಿಸ್ತರಿಸುತ್ತದೆ. ತಮ್ಮ ಜೀವನೋಪಾಯಕ್ಕಾಗಿ ಈ ಜಲಮೂಲಗಳ ಮೇಲೆ ಅವಲಂಬಿತವಾಗಿರುವ ರೈತರು ಮತ್ತು ಮೀನುಗಾರರಿಗೆ ಬೆದರಿಕೆ ಅಳೆಯಲಾಗದು.\nಕಾನೂನು ಸಂಘರ್ಷ: ಪ್ರಸ್ತಾವಿತ ತಿದ್ದುಪಡಿಗಳು ಕರ್ನಾಟಕ ಹೈಕೋರ್ಟ್ ಆದೇಶ (2012) ನೊಂದಿಗೆ ನೇರ ಸಂಘರ್ಷದಲ್ಲಿವೆ, ಅದು ನ್ಯಾಯಮೂರ್ತಿ ಎನ್.ಕೆ. ಎಲ್ಲಾ ಸರೋವರಗಳ ಸುತ್ತಲೂ ಏಕರೂಪದ 30 ಮೀಟರ್ ಬಫರ್, ಒಳಚರಂಡಿ ಒಳಹರಿವು ಕಟ್ಟುನಿಟ್ಟಾದ ತಡೆಗಟ್ಟುವಿಕೆ, ಸರೋವರದ ಗಡಿಗಳ ಫೆನ್ಸಿಂಗ್ ಮತ್ತು ಗಡಿರೇಖೆ ಮತ್ತು ಸಮುದಾಯ ನೇತೃತ್ವದ ಸಂರಕ್ಷಣೆ. ಇದು ಸುಪ್ರೀಂ ಕೋರ್ಟ್ ತೀರ್ಪಿನೊಂದಿಗೆ (2019) ಸಂಘರ್ಷದಲ್ಲಿದೆ, ಇದು ಎನ್‌ಜಿಟಿಯ 75 ಮೀಟರ್ ಬಫರ್ ಅನ್ನು ಬದಿಗಿಟ್ಟು, 30 ಮೀಟರ್ ಬಫರ್ ಅನ್ನು ಪರಿಷ್ಕೃತ ಮಾಸ್ಟರ್ ಪ್ಲ್ಯಾನ್ ಅಡಿಯಲ್ಲಿ ಕನಿಷ್ಠ ಮಾನದಂಡವೆಂದು ಪುನರುಚ್ಚರಿಸಿತು, ಆದರೆ ಮತ್ತಷ್ಟು ಕಡಿಮೆಯಾಗಬಾರದು. \n ಆದ್ದರಿಂದ ಈ ಕೆಳಗಿನ ಬೇಡಿಕೆಗಳನ್ನು ಪರಿಗಣಿಸಲು ನಾವು ನಿಮ್ಮನ್ನು ಒತ್ತಾಯಿಸುತ್ತೇವೆ:\nತಿದ್ದುಪಡಿ ಮತ್ತು ಅಧಿಸೂಚನೆಯನ್ನು ಹಿಂತೆಗೆದುಕೊಳ್ಳಿರಿ/ ನಿಲ್ಲಿಸಿ: ರಾಜಕಲುವ್ ಬಫರ್‌ಗಳನ್ನು ಕಡಿಮೆ ಮಾಡುವ ಕೆಟಿಸಿಡಿಎ ತಿದ್ದುಪಡಿ ಮಸೂದೆ ಮತ್ತು ನಗರಾಭಿವೃದ್ಧಿ ವಿಭಾಗ (ಯುಡಿಡಿ) ಅಧಿಸೂಚನೆಯನ್ನು ತಕ್ಷಣ ಹಿಂಪಡೆಯಬೇಕೆಂದು ನಾವು ಒತ್ತಾಯಿಸುತ್ತೇವೆ.\nಕನಿಷ್ಠ 30 ಮೀ ಬಫರ್ ಅನ್ನು ನಿರ್ವಹಿಸಿ: ಗಾತ್ರವನ್ನು ಲೆಕ್ಕಿಸದೆ ಎಲ್ಲಾ ಸರೋವರಗಳ ಸುತ್ತಲೂ ಏಕರೂಪದ 30 ಮೀ ಬಫರ್ ಅನ್ನು ಉಳಿಸಿಕೊಳ್ಳಿ. ಚಂಡಮಾರುತದ ನೀರಿನ ಚರಂಡಿಗಳಿಗಾಗಿ, ಮೊದಲಿನ ಕಡ್ಡಾಯವಾಗಿ ಕನಿಷ್ಠ 50/35/25 ಮೀ (ಪ್ರಾಥಮಿಕ/ದ್ವಿತೀಯ/ತೃತೀಯ) ಅನ್ನು ನಿರ್ವಹಿಸಿ, ಏಕೆಂದರೆ 15/10/5m ಗೆ ಕಡಿಮೆಯಾಗುವುದು ಪರಿಸರೀಯವಾಗಿ ಅಪಾಯಕಾರಿ.\nಮರಗಳ ರಕ್ಷಣೆ & ಜೀವವೈವಿಧ್ಯ: ಸುಮಾರು 11 ಕೋಟಿ ಮರಗಳು ಮತ್ತು ವನ್ಯಜೀವಿ ಆವಾಸಸ್ಥಾನಗಳು ಅಪಾಯದಲ್ಲಿದೆ. ನಾವು ಕಟ್ಟುನಿಟ್ಟಾದ ಜೀವವೈವಿಧ್ಯ ಪ್ರಭಾವದ ಮೌಲ್ಯಮಾಪನವನ್ನು ಬಯಸುತ್ತೇವೆ.\nಹಿಂದಿನ ನ್ಯಾಯಾಲಯದ ಆದೇಶಗಳ ಅನುಸರಣೆ: ಪಟೇಲ್ ಸಮಿತಿಯ ವರದಿ (2011), ಹೈಕೋರ್ಟ್ ಆದೇಶ (2012), ಮತ್ತು ಸುಪ್ರೀಂ ಕೋರ್ಟ್ನ 2019 ರ ನಿರ್ದೇಶನದ ಕನಿಷ್ಠ 30-ಮೀಟರ್ ಬಫರ್ ಅನ್ನು ಕಡ್ಡಾಯಗೊಳಿಸುವುದನ್ನು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಲು ನಾವು ಅಧಿಕಾರಿಗಳಿಗೆ ಕರೆ ನೀಡುತ್ತೇವೆ.\n\nhttps://www.thehansindia.com/news/cities/bengaluru/only-3-per-cent-green-cover-left-in-bengaluru-iisc-study-989907\nhttps://researchmatters.in/article/satellite-images-show-green-cover-bangalore-reducing-alarmingly-fast\nhttps://bangaloremirror.indiatimes.com/bangalore/others/bengaluru-laid-bare-city-losing-green-cover-says-report/articleshow/119129213.cms\nhttps://urbanacres.in/bengalurus-green-decline-and-nearby-districts-growth/\nhttps://www.insightsonindia.com/2025/05/21/bengaluru-urban-flooding/\nhttps://www.atree.org/wp-content/uploads/2025/07/Building-resilience-to-urban-floods-Strategy-and-Action-plan-for-Bengaluru.pdf\nhttps://link.springer.com/article/10.1007/s11069-024-07019-9\nhttps://ktcda.karnataka.gov.in/storage/pdf-files/ACT/Final%20Order%20Dated-11-04-2012.pdf\nhttps://www.deccanherald.com/india/quash-ngt-s-lake-buffer-zone-711144.html\nhttps://www.newindianexpress.com/cities/bengaluru/2025/Sep/12/reducing-buffer-will-choke-city-lakes-warn-environmentalists"];
+      const SIGNING_OFF_OPTIONS = ["ನಿಮ್ಮ ಪ್ರಾಮಾಣಿಕವಾಗಿ,","ಒಗ್ಗಟ್ಟಿನಲ್ಲಿ,","ನ್ಯಾಯದ ಭರವಸೆಯೊಂದಿಗೆ,","ಅಭಿನಂದನೆಗಳು,"];
+
+      // --- Use actual newline characters internally for JS logic ---
+      const LINE_BREAK = "\n";
+      const DOUBLE_LINE_BREAK = "\n\n";
+    
+      
+      let mailtoLink = "";
+      let copyText = ""; // Body only for preview/copy
+      let selectedSubject = "";
+
+      function getRandomElement(arr) {
+        // Ensure arr is an array and not empty before accessing length
+        if (!Array.isArray(arr) || arr.length === 0) return "";
+        return arr[Math.floor(Math.random() * arr.length)];
+      }
+
+      function escapeHtmlForDisplay(unsafe) {
+        if (typeof unsafe !== "string") return "";
+        return unsafe
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function prepareMail() {
+        const sendLink = document.getElementById("send");
+
+        try {
+          selectedSubject = getRandomElement(SUBJECT_LINES);
+          const selectedPara1 = getRandomElement(PARA1_OPTIONS);
+          const selectedPara2 = getRandomElement(PARA2_OPTIONS);
+          const selectedPara3 = getRandomElement(PARA3_OPTIONS);
+          const selectedSignoff = getRandomElement(SIGNING_OFF_OPTIONS);
+
+          // --- Construct body using actual newlines ---
+          const bodyForMailto = [
+            selectedPara1,
+            selectedPara2,
+            selectedPara3,
+            selectedSignoff,
+          ].filter(p => typeof p === 'string' && p.length > 0) // Filter out potential empty strings/undefined
+           .join(DOUBLE_LINE_BREAK); // Join paragraphs with internal newlines
+
+          // --- Construct mailto link (URLSearchParams will encode \n correctly) ---
+          const params = new URLSearchParams();
+          // Only add params if they have a value
+          if (CC_ADDRESS) params.append("cc", CC_ADDRESS);
+          if (BCC_ADDRESS) params.append("bcc", BCC_ADDRESS);
+          if (selectedSubject) params.append("subject", selectedSubject);
+          if (bodyForMailto) params.append("body", bodyForMailto); // Let URLSearchParams handle encoding 
+
+
+          // Platform Specific Adjustments (Example for iOS if needed later)
+          let finalQueryString = params.toString();
+          finalQueryString = finalQueryString.replace(/\+/g, '%20');
+
+          // Platform Detection
+					const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+					const platformNavigator = navigator.platform || ""; // For OS-level platform string
+
+					let detectedSystem = "Unknown";
+					let mailtoEncodingProfile = "standard"; // Profile to decide encoding: 'ios_specific' or 'standard'
+
+					// iOS Detection Logic
+					// 1. Check navigator.platform for direct iOS device strings (most reliable if available)
+					if (/iPad|iPhone|iPod/.test(platformNavigator)) {
+						detectedSystem = "iOS";
+						mailtoEncodingProfile = "ios_specific";
+					}
+					// 2. Check userAgent for standard iOS device strings
+					else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) { // !window.MSStream helps avoid some Windows Phone false positives
+						detectedSystem = "iOS";
+						mailtoEncodingProfile = "ios_specific";
+					}
+					// 3. Check for "Macintosh" + "Mobile" in userAgent (common for iPads in desktop mode/emulators)
+					else if (/Macintosh/.test(userAgent) && /Mobile/.test(userAgent)) {
+						detectedSystem = "iOS";
+						mailtoEncodingProfile = "ios_specific";
+					}
+					// 4. Check for "Macintosh" userAgent with multi-touch capability (another iPad desktop mode/emulator indicator)
+					else if (/Macintosh/.test(userAgent) && navigator.maxTouchPoints && navigator.maxTouchPoints > 1) {
+						detectedSystem = "iOS";
+						mailtoEncodingProfile = "ios_specific";
+					}
+					// macOS Detection (ensure it's not an iPad already identified above)
+					else if ((/Macintosh/.test(userAgent) || /MacIntel/.test(platformNavigator) || /MacPPC/.test(platformNavigator) || /Mac68K/.test(platformNavigator))) {
+						detectedSystem = "macOS";
+						mailtoEncodingProfile = "standard";
+					}
+					// Android Detection
+					else if (/android/i.test(userAgent)) {
+						detectedSystem = "Android";
+						mailtoEncodingProfile = "standard"; // Android is generally robust
+					}
+					// Windows Detection
+					else if (/Win/.test(platformNavigator)) {
+						detectedSystem = "Windows";
+						mailtoEncodingProfile = "standard";
+					}
+					// Linux Desktop Detection
+					else if (/Linux/.test(platformNavigator) && !/android/i.test(userAgent)) { // Exclude Android's Linux
+						detectedSystem = "Linux";
+						mailtoEncodingProfile = "standard";
+					}
+					// If still "Unknown", it might be a less common OS. 'standard' is a safe default.
+					console.log("Detected System:", detectedSystem);
+					console.log("Using mailto encoding profile:", mailtoEncodingProfile);
+
+					// Apply encoding adjustments based on the profile
+					if (mailtoEncodingProfile === "ios_specific") {
+						console.log("Applying iOS specific mailto link generation strategy.");
+						finalQueryString = finalQueryString.replace(/%0A/g, '%0D%0A');
+						console.log("iOS: Converted newlines from %0A to %0D%0A for better compatibility.");
+					}
+					
+					else if (mailtoEncodingProfile === "standard") {
+						console.log("Applying standard mailto link generation strategy for ", detectedSystem);
+					}
+					// finalQueryString is now potentially adjusted based on the platform.
+
+					if(mailtoLink.length>1998)
+						console.warn("mailto too long for Chrome: " + mailtoLink.length +" chars");
+					else
+						console.log("mailto length OK: "+ mailtoLink.length +" chars");
+
+          if (TO_ADDRESS) {
+             // Encode TO addresses individually, then join
+             const encodedTo = TO_ADDRESS.split(",")
+              .map(e => e.trim()) // Trim whitespace first
+              .filter(e => e)     // Remove empty entries
+              .map(e => encodeURIComponent(e)) // Then encode
+              .join(",");
+
+             if (encodedTo) { // Ensure there's at least one valid TO address after filtering/encoding
+                mailtoLink = `mailto:${encodedTo}?${finalQueryString}`;
+             } else {
+                mailtoLink = ""; // No valid TO address
+                console.error("No valid TO addresses provided after encoding.");
+             }
+
+          } else {
+            mailtoLink = "";
+            console.error("TO address constant is missing or empty.");
+          }
+
+          // --- Construct body text for preview/copy (plain text) ---
+          copyText = [
+              selectedPara1,
+              selectedPara2,
+              selectedPara3,
+              selectedSignoff
+          ].filter(p => typeof p === 'string' && p.length > 0)
+           .join('\n\n');
+
+          // --- Update preview elements safely ---
+          const toElem = document.getElementById("preview-to");
+          const ccElem = document.getElementById("preview-cc");
+          const ccLine = document.getElementById("cc-line");
+          const bccElem = document.getElementById("preview-bcc");
+          const bccLine = document.getElementById("bcc-line");
+          const subjectElem = document.getElementById("preview-subject");
+          const previewElem = document.getElementById("email-preview");
+
+          if (toElem) toElem.textContent = escapeHtmlForDisplay(TO_ADDRESS || '(Not specified)');
+          if (ccElem && ccLine) {
+              if (CC_ADDRESS) {
+                  ccElem.textContent = escapeHtmlForDisplay(CC_ADDRESS);
+                  ccLine.style.display = 'block';
+              } else {
+                  ccLine.style.display = 'none';
+              }
+          }
+          if (bccElem && bccLine) {
+              if (BCC_ADDRESS) {
+                  bccElem.textContent = escapeHtmlForDisplay(BCC_ADDRESS);
+                  bccLine.style.display = 'block';
+              } else {
+                  bccLine.style.display = 'none';
+              }
+          }
+          // Display generated subject or placeholder
+          if (subjectElem) subjectElem.textContent = escapeHtmlForDisplay(selectedSubject || '(No subject generated)');
+          // Display generated body or placeholder
+          if (previewElem) previewElem.textContent = copyText || '(No body content generated)';
+
+
+          // --- Update the href of the anchor tag ---
+          if (sendLink) {
+            if (mailtoLink) {
+              sendLink.href = mailtoLink;
+              sendLink.classList.remove("disabled");
+              sendLink.title = "Click to open in your default email client";
+            } else {
+              sendLink.href = "#"; // Prevent navigation
+              sendLink.classList.add("disabled"); // Visually disable
+              sendLink.title = "Cannot generate email link (check TO address and console errors)";
+            }
+          }
+        } catch (err) {
+          console.error("Error in prepareMail:", err);
+          alert("An error occurred while preparing the email preview. Check console for details.");
+          if (sendLink) {
+            sendLink.href = "#";
+            sendLink.classList.add("disabled");
+            sendLink.title = "Error generating email link";
+          }
+        }
+      }
+
+      // --- Event Listeners within generated file ---
+      document.addEventListener("DOMContentLoaded", () => {
+        const copyButton = document.getElementById("copy");
+
+        if (copyButton) {
+          copyButton.addEventListener("click", () => {
+            // Ensure content exists before trying to copy
+            if (!copyText && !selectedSubject) {
+              alert("Email content not generated yet. Please reload or check generator inputs.");
+              return;
+            }
+            // Construct the full text including headers for copying
+            const fullEmailText = `To: ${TO_ADDRESS || ''}\n${
+              CC_ADDRESS ? `Cc: ${CC_ADDRESS}\n` : ""
+            }${
+              BCC_ADDRESS ? `Bcc: ${BCC_ADDRESS}\n` : ""
+            }Subject: ${selectedSubject || ''}\n\n${copyText || ''}`;
+
+            navigator.clipboard.writeText(fullEmailText)
+              .then(() => {
+                alert("Email content copied to clipboard!");
+              })
+              .catch(err => {
+                console.warn("Clipboard API failed, trying fallback:", err);
+                // Fallback using temporary textarea
+                const textarea = document.createElement("textarea");
+                textarea.value = fullEmailText;
+                textarea.style.position = "fixed"; // Prevent scrolling issues
+                textarea.style.opacity = "0"; // Hide it visually
+                textarea.style.left = "-9999px"; // Move off-screen
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                  document.execCommand("copy");
+                  alert("Email content copied (fallback)!");
+                } catch (errFallback) {
+                  console.error("Fallback copy failed:", errFallback);
+                  alert("Failed to copy automatically. Please copy manually from the preview.");
+                }
+                document.body.removeChild(textarea);
+              });
+          });
+        }
+
+        // Initial preparation on load
+        prepareMail();
+
+        // Automatically redirect to a mail app
+        const sendLink = document.getElementById("send");
+        if (sendLink && !sendLink.classList.contains("disabled")) {
+          window.location.href = sendLink.href;
+        }
+      });
+    
+      // --- Embedded Mail Generation Script END ---
+    </script>
+</body>
+</html>
