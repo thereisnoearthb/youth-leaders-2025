@@ -76,11 +76,21 @@
       }
 
       .slide{
-        height: 100vh;
+        height: 700vh;
         width: 100vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+
+      .content-wrapper {
         display: flex;
         align-items: center;
         justify-content: center;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        background-color: rgb(255, 255, 255);
       }
 
       .slide-1-left{
@@ -128,102 +138,72 @@
 
       @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400');
 
-  .dropping-texts {
-    display: inline-block;
-    width: 100px;
-    text-align: left;
-    height: 36px;
-    margin-left: 2rem;
-  }
+    .dropping-texts {
+      display: inline-block;
+      width: 100px;
+      text-align: left;
+      height: 36px;
+      margin-left: 2rem;
+    }
 
-.dropping-texts > div {
-  font-size:0px;
-  opacity:0;
-  margin-left:0px;
-  position:absolute;
-  font-weight:300;   
-}
+    .dropping-texts > div {
+      margin-left: -30px;
+      margin-top: 0;
+      transform: rotate(-25deg);
+      font-size: 0;
+      opacity: 0;
+      position: absolute;
+      font-weight: 300;
+      transition: all 0.3s ease;
+    }
 
-.dropping-texts > div:nth-child(1) {
-  animation: roll 17s linear infinite 0s;
-}
-.dropping-texts > div:nth-child(2) {
-  animation: roll 17s linear infinite 3s;
-}
-.dropping-texts > div:nth-child(3) {
-  animation: roll 17s linear infinite 6s;
-}
-.dropping-texts > div:nth-child(4) {
-  animation: roll 17s linear infinite 9s;
-}
-.dropping-texts > div:nth-child(5) {
-  animation: roll 17s linear infinite 12s;
-}
-.dropping-texts > div:nth-child(6) {
-  animation: roll 17s linear infinite 15s;
-}
-
-@keyframes roll {
-  0% {
-    font-size:0px;
-    opacity:0;
-    margin-left:-30px;
-    margin-top:0px;
-    transform: rotate(-25deg);
-  }
-  3% {
-    opacity:1;
-    transform: rotate(0deg);
-  }
-  5% {
-    font-size:inherit;
-    opacity:1;
-    margin-left:0px;
-    margin-top:0px;
-  }
-  20% {
-    font-size:inherit;
-    opacity:1;
-    margin-left:0px;
-    margin-top:0px;
-    transform: rotate(0deg);
-  }
-  27% {
-    font-size:0px;
-    opacity:0.5;
-    margin-left:20px;
-    margin-top:100px;
-  }
-  100% {
-    font-size:0px;
-    opacity:0;
-    margin-left:-30px;
-    margin-top:0px;
-    transform: rotate(15deg);
-  }
-}
+    .dropping-texts > div.active {
+      font-size: inherit;
+      opacity: 1;
+      margin-left: 0;
+      margin-top: 0;
+      transform: rotate(0deg);
+    }
 
     </style>
   </head>
 
   <body>
     <div class="slide">
-      <div class="slide-1-left">
-        <div class="top">Youth</div>
-        <div class="mid">CLimate</div>
-        <div class="bot">Leaders</div>
-      </div>
-      <div class="slide-1-right">
-        <div class="dropping-texts">
-          <div>2025</div>
-          <div>100+ Applications</div>
-          <div>40 Cohort Members</div>
-          <div>8 Youth Partners</div>
-          <div>6 Sessions</div>
-          <div>4 Speakers</div>
+      <div class="content-wrapper">
+        <div class="slide-1-left">
+          <div class="top">Youth</div>
+          <div class="mid">CLimate</div>
+          <div class="bot">Leaders</div>
+        </div>
+        <div class="slide-1-right">
+          <div class="dropping-texts">
+            <div>2025</div>
+            <div>100+ Applications</div>
+            <div>40 Cohort Members</div>
+            <div>8 Youth Partners</div>
+            <div>6 Sessions</div>
+            <div>4 Speakers</div>
+          </div>
         </div>
       </div>
-    </div>       
+    </div>
+    <script>
+      let texts = document.querySelectorAll('.dropping-texts > div');
+      let prevIndex = 0;
+      texts[0].classList.add('active');
+
+      window.addEventListener('scroll', () => {
+        let scrollPos = window.scrollY / window.innerHeight;
+        let index = Math.floor(scrollPos);
+        if (index > 5) index = 5;
+        if (index !== prevIndex) {
+          texts[prevIndex].classList.remove('active');
+          texts[index].classList.add('active');
+          prevIndex = index;
+        }
+      });
+    </script>
   </body>
 
 </html>
