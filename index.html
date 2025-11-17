@@ -2,15 +2,15 @@
 <html lang="en">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:title" content="Care4Kere">
+    <meta property="og:title" content="Youth CLimate Leaders">
     <meta property="og:description"
-      content="The government has proposed the Karnataka Tank Conservation and Development Authority Amendment Bill 2025, but experts say it could harm these water bodies instead of protecting them. 45,000 lakes and 11 crore trees are at stake">
-    <meta property="og:image" content="https://care4kere.thereisnoearthb.com/pictures/og-image.png">
+      content="Youth Climate Leaders: Global Policy Workshop Series was born out of recognizing a crucial reality, that many Indian youth lack access to global decision-making spaces and often face an overwhelming amount of information about climate processes">
+    <meta property="og:image" content="pictures/preview.png">
     <meta property="og:image:type" content="image/png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="title"
-      content="The government has proposed the Karnataka Tank Conservation and Development Authority Amendment Bill 2025, but experts say it could harm these water bodies instead of protecting them. 45,000 lakes and 11 crore trees are at stake">
-    <title>Care4Kere: Official Website of the movement</title>
+      content="Youth Climate Leaders: Global Policy Workshop Series was born out of recognizing a crucial reality, that many Indian youth lack access to global decision-making spaces and often face an overwhelming amount of information about climate processes">
+    <title>Youth CLimate Leaders 2025</title>
 
     <link rel="icon" href="https://thereisnoearthb.com/TINEB_LOGO.jpeg" type="image/x-icon">
 
@@ -27,6 +27,11 @@
 
 
     <style>
+
+      body::-webkit-scrollbar {
+        display: none;
+      }
+
       * {
         margin-top: 0px;
         margin-right: 0px;
@@ -54,7 +59,7 @@
       }
 
       .slide-1{
-        height: 700vh;
+        height: 400vh;
         width: 100vw;
         display: flex;
         flex-direction: column;
@@ -133,7 +138,7 @@
       }
 
       .slide-2{
-        margin: 20vh 0;
+        margin-top: 10vh;
         width: 100vw;
         display: flex;;
         justify-content: center;
@@ -141,7 +146,6 @@
       }
 
       .slide-2-text{
-        font-size: 100px;
         color: white;
         padding: 0 10%;
         font-size:x-large;
@@ -169,12 +173,13 @@
       }
 
       .carousel-title{
-        margin: 1rem 10%;
+        margin: 1rem 0;
+        padding: 0 10%;
       }
 
       .slide-4{
-        padding: 4rem 10%;
-        font-size: 100px;
+        margin: 4rem 0;
+        padding: 0 10%;
         color: white;
         padding: 0 10%;
         font-size:x-large;
@@ -274,6 +279,38 @@
       /* --- END: ADDED CAROUSEL STYLES --- */
 
 
+      /* --- START: Down arrow --- */
+      .arrow-pulse-down:after {
+        content: "🡣"; /* Here you can change the style of the arrow */
+        position: absolute;
+        width: 35px; height: 35px;
+        margin: 0 auto;
+        left: 0; right: 0;
+        font-size: 35px;
+        animation: arrow-pulse-down 700ms linear infinite;
+      }
+        @keyframes arrow-pulse-down {
+          0% {
+            bottom: 40px;
+            opacity: 0;
+          }
+          25% {
+            opacity: .25;
+          }
+          50% {
+            opacity: .5;
+          }
+          75% {
+            opacity: .75;
+          }
+          100% {
+            bottom: 20px;
+            opacity: 1;
+          }
+        }      
+      /* --- END: Down arrow --- */
+
+
       @media only screen and (max-width: 600px){
         .content-wrapper {
           flex-direction: column;
@@ -310,6 +347,7 @@
         }
 
         .slide-3-yt{
+          margin: 5%;
           width: 100%;
         }
 
@@ -320,6 +358,10 @@
         }
         .carousel-container {
           padding: 4rem 0.5rem;
+        }
+
+        .slide-2-text .slide-4 .basic-text{
+          font-size:medium !important;
         }
       }
 
@@ -348,19 +390,15 @@
           </div>
         </div>
       </div>
+        <div class="arrow-pulse-down"></div>
+      </div>
+      </div>
     </div>
 
     <div class="slide-2">
       <p class="slide-2-text"><strong>Youth Climate Leaders:</strong> Global Policy Workshop Series was born out of recognizing a crucial reality, that many Indian youth lack access to global decision-making spaces and often face an overwhelming amount of information about climate processes. This series set out to take the first step in bridging that gap. Through peer learning and intergenerational mentorship, it aimed to help young people recognize, strengthen, and embrace their own leadership potential. It served as a bridge between two powerful groups: young leaders with global experience and knowledge, and young leaders rooted in grassroots realities.</p>
     </div>
-    <div class="slide-3">
-      <iframe class="slide-3-yt" width="560" height="315" src="https://www.youtube.com/embed/jRZ-0DW1vjQ?si=k0Qe5Sey_F7fDiJV" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      <p class="slide-3-para"><h2 class="slide-3-title">Meet Archana Soreng</h2><br>Archana Soreng is a Young Adivasi woman from the Khadia Tribe in Odisha, India, and Curator of the Youth Climate Leaders: Global Policy Workshop Series 2025. She served as a Member of the United Nations Secretary-General’s Youth Advisory Group on Climate Change (2020–2023), as part of its first cohort.
-      Archana champions youth-led climate action, Indigenous leadership, and inclusive climate finance.
-      In this conversation, she shares her vision behind curating the Youth Climate Leaders: Global Policy Workshop Series 2025, emphasising that young people and Indigenous communities have the power to shape stronger and more equitable global climate policies. Her journey is deeply rooted in love, solidarity, and respect.
-      Discover her journey and the collective efforts toward just, community-led climate actions.</p>
-    </div>
-    <div class="carousel-container">
+        <div class="carousel-container">
       <h2 class="carousel-title">Youth Statement for COP30: Shaping Global Climate Action</h2>
       <div class="flip-carousel-container">
         <div class="flip-carousel">
@@ -382,6 +420,13 @@
         </div>
       </div>
     </div>
+    <div class="slide-3">
+      <iframe class="slide-3-yt" width="560" height="315" src="https://www.youtube.com/embed/jRZ-0DW1vjQ?si=k0Qe5Sey_F7fDiJV" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <p class="slide-3-para"><h2 class="slide-3-title">Meet Archana Soreng</h2><br>Archana Soreng is a Young Adivasi woman from the Khadia Tribe in Odisha, India, and Curator of the Youth Climate Leaders: Global Policy Workshop Series 2025. She served as a Member of the United Nations Secretary-General’s Youth Advisory Group on Climate Change (2020–2023), as part of its first cohort.
+      Archana champions youth-led climate action, Indigenous leadership, and inclusive climate finance.
+      In this conversation, she shares her vision behind curating the Youth Climate Leaders: Global Policy Workshop Series 2025, emphasising that young people and Indigenous communities have the power to shape stronger and more equitable global climate policies. Her journey is deeply rooted in love, solidarity, and respect.
+      Discover her journey and the collective efforts toward just, community-led climate actions.</p>
+    </div>
     <div class="slide-4">
       <p class="basic-text">We’ve officially completed all 6 sessions for our first cohort<br><br>
         <strong>Youth Climate Leaders:</strong> Global Policy Workshop Series was born out of recognizing a crucial reality, that many Indian youth lack access to global decision-making spaces and often face an overwhelming amount of information about climate processes.<br>
@@ -395,7 +440,7 @@
       texts[0].classList.add('active');
 
       window.addEventListener('scroll', () => {
-        let scrollPos = window.scrollY / window.innerHeight;
+        let scrollPos = window.scrollY / (window.innerHeight * 0.5);
         let index = Math.floor(scrollPos);
         if (index > 5) index = 5;
         if (index !== prevIndex) {
